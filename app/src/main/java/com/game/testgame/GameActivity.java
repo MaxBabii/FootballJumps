@@ -6,11 +6,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 
-import android.app.GameManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.Image;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
@@ -29,7 +27,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -45,9 +42,7 @@ public class GameActivity extends AppCompatActivity {
     private FirebaseRemoteConfig remoteConfig;
     private PhoneStateListener phoneStateListener;
     private ConnectivityManager.NetworkCallback networkCallback;
-    private SharedPreferences sharedPreferences;
     private static final String ONESIGNAL_APP_ID = "c8e9c00f-8922-475c-b54a-fa82dd7e7223";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,7 +119,6 @@ public class GameActivity extends AppCompatActivity {
         decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
             @Override
             public void onSystemUiVisibilityChange(int visibility) {
-                // Якщо системні панелі навігації видимі, ховаємо їх
                 if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
                     hideUi();
                 }
@@ -150,13 +144,6 @@ public class GameActivity extends AppCompatActivity {
         hideUi();
         mainGame.resume();
     }
-
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//        mainGame.pause();
-//    }
-
     @Override
     public void onBackPressed() {
         if (NAME_WEB_VIEW_SHOW.canGoBack()) {
@@ -269,5 +256,4 @@ public class GameActivity extends AppCompatActivity {
             decorView.setSystemUiVisibility(uiOptions);
         }
     }
-
 }

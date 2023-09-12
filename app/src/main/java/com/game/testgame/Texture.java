@@ -16,7 +16,7 @@ public class Texture {
     public void loadFromResource(Context context, int resourceId) {
         try {
             BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inScaled = false; // Забороняємо автоматичне масштабування зображення
+            options.inScaled = false;
 
             image = BitmapFactory.decodeResource(context.getResources(), resourceId, options);
             width = image.getWidth();

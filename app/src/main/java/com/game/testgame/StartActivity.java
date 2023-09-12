@@ -109,7 +109,6 @@ public class StartActivity extends AppCompatActivity {
                 });
             }
         };
-
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         connectivityManager.registerNetworkCallback(
                 new NetworkRequest.Builder()
@@ -154,7 +153,6 @@ public class StartActivity extends AppCompatActivity {
         } else {
         }
     }
-
     private void getData() {
         boolean isSimActive = isExistsAndActiveSim(this);
         if (isSimActive) {

@@ -29,7 +29,6 @@ public class MainGame extends SurfaceView implements Runnable {
     private SurfaceHolder holder;
     private boolean plus_points = true;
     private boolean doodleVisible = true;
-
     private boolean canHandleTouch = true;
     public int scoreP = 0;
     private Paint paint;
@@ -42,10 +41,9 @@ public class MainGame extends SurfaceView implements Runnable {
         super(context, attrs);
         holder = getHolder();
         paint = new Paint();
-        int platformSpacing = 400; // Відстань між платформами
+        int platformSpacing = 400;
         int startY = 1500;
 
-        // Завантаження зображень
         background = BitmapFactory.decodeResource(getResources(), R.drawable.back_main);
         platform = BitmapFactory.decodeResource(getResources(), R.drawable.back_stage);
         doodle = BitmapFactory.decodeResource(getResources(), R.drawable.back_ball);
@@ -65,13 +63,13 @@ public class MainGame extends SurfaceView implements Runnable {
 
         for (int i = 0; i < 500; i++) {
             platformsPosition[i] = new PlatformPosition(new Random().nextInt(500), startY);
-            startY -= platformSpacing; // Зменшуємо висоту для наступної платформи
+            startY -= platformSpacing;
         }
     }
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (!canHandleTouch) {
-            return true; // Відмовляйте від обробки подій торкання, якщо флаг вимкнуто
+            return true;
         }
 
         int action = event.getAction();
@@ -80,17 +78,15 @@ public class MainGame extends SurfaceView implements Runnable {
             case MotionEvent.ACTION_DOWN:
                 break;
             case MotionEvent.ACTION_MOVE:
-                // Обробка події натискання або руху пальця
                 fingerX = event.getX();
                 break;
 
             case MotionEvent.ACTION_UP:
-                // Обробка події відпускання пальця
-                fingerX = -1; // Скидання координат, щоб зупинити переміщення об'єкта
+                fingerX = -1;
                 break;
         }
 
-        return true; // Повернення true, щоб показати, що подія була оброблена
+        return true;
     }
 
 
@@ -100,7 +96,7 @@ public class MainGame extends SurfaceView implements Runnable {
         if (resourceId > 0) {
             return resources.getDimensionPixelSize(resourceId);
         }
-        return 0; // Повернення 0, якщо розмір не знайдено
+        return 0;
     }
 
     @Override
@@ -110,10 +106,9 @@ public class MainGame extends SurfaceView implements Runnable {
                 continue;
 
             Canvas canvas = holder.lockCanvas();
-            // Малювання гри
+
             drawGame(canvas);
 
-            // Оновлення стану гри
             updateGame();
 
             holder.unlockCanvasAndPost(canvas);
@@ -123,10 +118,8 @@ public class MainGame extends SurfaceView implements Runnable {
     private void updateGame() {
         int endGameThreshold = getHeight();
         if (fingerX != -1) {
-            // Обробка руху пальця вліво і вправо
-            x = (int) fingerX - doodle.getWidth() / 2; // Центруємо об'єкт відносно пальця
+            x = (int) fingerX - doodle.getWidth() / 2;
 
-            // Обмеження руху об'єкта в межах екрану
             if (x < 0) {
                 x = 0;
             } else if (x + doodle.getWidth() > getWidth()) {
@@ -134,26 +127,21 @@ public class MainGame extends SurfaceView implements Runnable {
             }
         }
 
-        // Обробка гравітації
         dy += 0.2;
         y += dy;
 
-        // Відскок м'яча
         if (y + doodle.getHeight() > getHeight()) {
             y = getHeight() - doodle.getHeight();
-            dy = -12; // Задайте значення, наскільки м'яч відскочить вгору
+            dy = -12;
         }
 
-        // Перевірка, чи об'єкт доходить ближче до верхньої частини екрану
         if (y < dropThreshold) {
-            // Опускання панелей вниз з такою самою швидкістю, як м'яч
             for (int i = 0; i < visiblePlatformCount; i++) {
                 platformsPosition[i].y += 7;
 
-                // Якщо платформа вийшла за межі екрану знизу, перемістіть її вгору
                 if (platformsPosition[i].y > getHeight()) {
-                    platformsPosition[i].y = -platform.getHeight(); // Почніть платформу зверху
-                    platformsPosition[i].x = new Random().nextInt(getWidth() - platform.getWidth()); // Змініть X платформи
+                    platformsPosition[i].y = -platform.getHeight();
+                    platformsPosition[i].x = new Random().nextInt(getWidth() - platform.getWidth());
                 }
             }
         }
@@ -221,26 +209,20 @@ public class MainGame extends SurfaceView implements Runnable {
     }
 
     private void drawGame(Canvas canvas) {
-        // Очищення екрану
         canvas.drawRGB(0, 0, 0);
 
         int navigationBarHeight = getNavigationBarHeight(getContext());
 
-        // Розрахунок розміру фонового зображення
         int screenWidth = canvas.getWidth();
         int screenHeight = canvas.getHeight();
 
-        // Встановіть координати і розміри фонового зображення
         Rect backgroundRect = new Rect(0, 0, screenWidth, screenHeight + navigationBarHeight);
 
-        // Малювання фону
         canvas.drawBitmap(background, null, backgroundRect, paint);
 
-        // Малювання гравця
         if (doodleVisible) {
             canvas.drawBitmap(doodle, x, y, paint);
         }
-        // Малювання платформ
         for (int i = 0; i < 10; i++) {
             canvas.drawBitmap(platform, platformsPosition[i].x, platformsPosition[i].y, paint);
         }
@@ -261,7 +243,6 @@ public class MainGame extends SurfaceView implements Runnable {
         }
     }
     public void restartGame() {
-        // Перезапуск гри з початковими значеннями
         x = 100;
         y = 1000;
         dy = 0;
